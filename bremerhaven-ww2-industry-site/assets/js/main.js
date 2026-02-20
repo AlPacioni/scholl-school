@@ -1,0 +1,355 @@
+(() => {
+  const nodeOriginalText = new WeakMap();
+  const attrOriginalText = new WeakMap();
+
+  const textReplacementsDe = [
+    ["Historical Industry Dossier", "Historisches Industrie-Dossier"],
+    ["Bremerhaven: Shipyard and Port Industry Across WWII", "Bremerhaven: Werft- und Hafenindustrie durch den Zweiten Weltkrieg"],
+    ["Professional educational website with structured evidence, maps, timelines, and visual archives.", "Professionelle Lernwebsite mit strukturierten Quellen, Karten, Zeitleisten und Bildarchiven."],
+    ["Choose a Section", "Bereich auswahlen"],
+    ["Section Access", "Bereichszugriff"],
+    ["Key Facts", "Kernfakten"],
+    ["Method", "Methode"],
+    ["Port Zone Map (Schematic)", "Hafenzonenkarte (Schema)"],
+    ["Pre-War vs Post-War Comparison", "Vergleich: Vor- und Nachkriegszeit"],
+    ["Related Museums and Archives", "Verwandte Museen und Archive"],
+    ["Before WWII", "Vor dem Zweiten Weltkrieg"],
+    ["During", "Während"],
+    ["During WWII", "Während des Zweiten Weltkriegs"],
+    ["After WWII", "Nach dem Zweiten Weltkrieg"],
+    ["Sources", "Quellen"],
+    ["About", "Über"],
+    ["Timeline", "Zeitleiste"],
+    ["Era 1", "Epoche 1"],
+    ["Era 2", "Epoche 2"],
+    ["Era 3", "Epoche 3"],
+    ["During World War II", "Während des Zweiten Weltkriegs"],
+    ["After World War II", "Nach dem Zweiten Weltkrieg"],
+    ["Before World War II", "Vor dem Zweiten Weltkrieg"],
+    ["Interactive Timeline (Filter by Era)", "Interaktive Zeitleiste (nach Epoche filtern)"],
+    ["Sources, Citations, and Image Credits", "Quellen, Zitate und Bildnachweise"],
+    ["Methodology", "Methodik"],
+    ["Glossary", "Glossar"],
+    ["About and Contact", "Über und Kontakt"],
+    ["Home", "Startseite"],
+    ["Overview", "Überblick"],
+    ["Section Access", "Bereichszugriff"],
+    ["Before WWII (to 1939)", "Vor dem Zweiten Weltkrieg (bis 1939)"],
+    ["During WWII (1939-1945)", "Während des Zweiten Weltkriegs (1939-1945)"],
+    ["After WWII (from 1945)", "Nach dem Zweiten Weltkrieg (ab 1945)"],
+    ["Interactive timeline and decade filters", "Interaktive Zeitleiste und Jahrzehnt-Filter"],
+    ["Bremerhaven was founded in 1848 as Bremen's seaport.", "Bremerhaven wurde 1848 als Seehafen Bremens gegruendet."],
+    ["Heavy raids struck in 1944-1945.", "Schwere Luftangriffe trafen die Stadt 1944-1945."],
+    ["Post-war reconstruction restored and modernized port operations.", "Der Wiederaufbau nach dem Krieg stellte den Hafenbetrieb wieder her und modernisierte ihn."],
+    ["Sources are tagged as documented or inferred and linked to references.", "Quellen sind als belegt oder abgeleitet gekennzeichnet und mit Nachweisen verknupft."],
+    ["Read methodology", "Methodik lesen"],
+    ["open glossary", "Glossar offnen"],
+    ["Fishing & Repair Basin", "Fischerei- und Reparaturbecken"],
+    ["Cargo & Shipyard Basin", "Fracht- und Werftbecken"],
+    ["Modern Logistics Terminals", "Moderne Logistikterminals"],
+    ["Dimension", "Dimension"],
+    ["Primary function", "Hauptfunktion"],
+    ["Before", "Vorher"],
+    ["After", "Nachher"],
+    ["Merchant shipping, fisheries, shipbuilding", "Handelsschifffahrt, Fischerei, Schiffbau"],
+    ["Reconstruction, then high-throughput logistics", "Wiederaufbau, danach Hochdurchsatz-Logistik"],
+    ["Infrastructure profile", "Infrastrukturprofil"],
+    ["Growing basins and workshops", "Wachsende Becken und Werkstatten"],
+    ["Modernized terminals and process digitalization", "Modernisierte Terminals und Prozessdigitalisierung"],
+    ["Labor structure", "Arbeitsstruktur"],
+    ["Craft-heavy dock and yard work", "Handwerksgepragte Dock- und Werftarbeit"],
+    ["Mechanized handling + logistics specialization", "Mechanisierter Umschlag + Logistikspezialisierung"],
+    ["Global role", "Globale Rolle"],
+    ["Regional-European maritime significance", "Regional-europaische maritime Bedeutung"],
+    ["Major international gateway in vehicle handling", "Wichtiges internationales Drehkreuz im Fahrzeugumschlag"],
+    ["German Maritime Museum (DSM)", "Deutsches Schifffahrtsmuseum (DSM)"],
+    ["German Emigration Center", "Deutsches Auswandererhaus"],
+    ["Bundesarchiv (Federal Archives)", "Bundesarchiv"],
+    ["Contact / About", "Kontakt / Über"],
+    ["Before World War II (1848-1939)", "Vor dem Zweiten Weltkrieg (1848-1939)"],
+    ["Industrial growth, migration routes, fisheries, and shipyard specialization built Bremerhaven's pre-war maritime strength.", "Industrielles Wachstum, Migrationsrouten, Fischerei und Werftspezialisierung bauten Bremerhavens maritime Starke vor dem Krieg auf."],
+    ["Neuer Hafen (1880), archival harbor expansion phase.", "Neuer Hafen (1880), archivierte Phase der Hafenerweiterung."],
+    ["Dock geometry and cargo handling expansion.", "Dockgeometrie und Ausbau des Guterumschlags."],
+    ["Date range: 1848-1939", "Zeitraum: 1848-1939"],
+    ["Focus: trade + shipyards", "Fokus: Handel + Werften"],
+    ["Bremerhaven developed as Bremen's maritime outlet, combining cargo traffic, fisheries, and shipyard services in one industrial waterfront system.", "Bremerhaven entwickelte sich als maritimer Auslass Bremens und verband Frachtverkehr, Fischerei und Werftdienste in einem industriellen Ufersystem."],
+    ["Dockworkers, steelworkers, riveters, and marine engineers drove production.", "Hafenarbeiter, Stahlarbeiter, Nieter und Schiffsingenieure trugen die Produktion."],
+    ["Passenger and migration flows supported service-sector jobs near harbor terminals.", "Passagier- und Migrationsstroeme unterstuetzten Dienstleistungsjobs an den Hafenterminals."],
+    ["Skilled labor concentration increased repair throughput and fleet readiness.", "Die Konzentration qualifizierter Arbeit erhoehte Reparaturdurchsatz und Flottenbereitschaft."],
+    ["Technology Changes (Pre-War)", "Technologische Veranderungen (Vorkriegszeit)"],
+    ["Transition from small workshop repairs to larger integrated dock systems.", "Der Uebergang von kleinen Werkstattreparaturen zu groesseren integrierten Docksystemen."],
+    ["Rail-linked cargo transfer improved turnaround speed.", "Schienengebundener Frachttransfer verbesserte die Umschlaggeschwindigkeit."],
+    ["Steam and metalworking capabilities scaled vessel maintenance.", "Dampf- und Metallbearbeitungskapazitaeten skalierten die Schiffsinstandhaltung."],
+    ["Attribution:", "Quelle:"],
+    ["Evidence Type", "Nachweistyp"],
+    ["City foundation date, role as seaport, long-term maritime function.", "Stadtgruendungsdatum, Rolle als Seehafen, langfristige maritime Funktion."],
+    ["Exact labor-role proportions by decade (not consistently quantified in one source).", "Exakte Arbeitsanteile pro Jahrzehnt (nicht in einer Quelle konsistent quantifiziert)."],
+    ["Footnotes", "Fussnoten"],
+    ["Comparative view: continuity of harbor geography.", "Vergleichsansicht: Kontinuitaet der Hafengeografie."],
+    ["Pre-war maritime commerce orientation.", "Vorkriegsorientierung des maritimen Handels."],
+    ["During World War II (1939-1945)", "Während des Zweiten Weltkriegs (1939-1945)"],
+    ["Industrial conversion, air raids, labor stress, and strategic military use changed the entire port ecosystem.", "Industrieumstellung, Luftangriffe, Arbeitsbelastung und strategische Militaernutzung veraenderten das gesamte Hafen-Okosystem."],
+    ["Date range: 1939-1945", "Zeitraum: 1939-1945"],
+    ["Focus: war conversion", "Fokus: Kriegsumstellung"],
+    ["Industrial and Social Effects", "Industrielle und soziale Auswirkungen"],
+    ["Shipyard output was redirected toward war-priority maritime tasks.", "Werftleistung wurde auf maritime Kriegsprioritaeten umgelenkt."],
+    ["Urban districts and infrastructure faced heavy bombing in 1944-1945.", "Stadtviertel und Infrastruktur waren 1944-1945 starken Bombardierungen ausgesetzt."],
+    ["Civilian housing and labor stability were severely disrupted.", "Wohnraum und Arbeitsstabilitaet der Zivilbevoelkerung wurden stark beeintraechtigt."],
+    ["Damage and Reconstruction Infographic", "Infografik: Schaden und Wiederaufbau"],
+    ["Housing damage", "Wohnungsschaeden"],
+    ["Dock operability", "Betriebsfaehigkeit der Docks"],
+    ["Rail support", "Schienenunterstuetzung"],
+    ["High", "Hoch"],
+    ["Partial", "Teilweise"],
+    ["Strained", "Belastet"],
+    ["Labor routines shifted from commercial predictability to emergency schedules, defense urgency, and bomb-disruption response.", "Arbeitsablaeufe verschoben sich von kommerzieller Planbarkeit zu Notfallplaenen, Verteidigungsdringlichkeit und Reaktionen auf Bombenschaeden."],
+    ["Inferred from wartime port pattern evidence", "Abgeleitet aus Mustern des Kriegshafenbetriebs"],
+    ["Ground-level change in governance and security.", "Veranderung von Verwaltung und Sicherheit auf Stadtebene."],
+    ["Continuity of maritime strategic relevance.", "Fortbestehen maritimer strategischer Relevanz."],
+    ["Post-war Bremerhaven regained dock functionality and progressively specialized in global logistics, especially vehicle throughput and terminal operations.", "Das Bremerhaven der Nachkriegszeit stellte die Funktionsfahigkeit der Hafenanlagen wieder her und spezialisierte sich schrittweise auf globale Logistik, insbesondere Fahrzeugumschlag und Terminalbetrieb."],
+    ["After World War II (from 1945)", "Nach dem Zweiten Weltkrieg (ab 1945)"],
+    ["Bremerhaven rebuilt critical maritime infrastructure and evolved into a modern high-volume logistics platform.", "Bremerhaven baute kritische maritime Infrastruktur wieder auf und entwickelte sich zu einer modernen Logistikplattform mit hohem Durchsatz."],
+    ["Date range: 1945-present", "Zeitraum: 1945-heute"],
+    ["Focus: reconstruction + logistics", "Fokus: Wiederaufbau + Logistik"],
+    ["Short-Term Recovery", "Kurzfristige Erholung"],
+    ["Long-Term Development", "Langfristige Entwicklung"],
+    ["Modern system maturity and global shipping integration.", "Reife des modernen Systems und globale Schifffahrtsintegration."],
+    ["Historic baseline versus modernized operations.", "Historische Ausgangslage gegen modernisierte Ablaufe."],
+    ["Evidence base", "Nachweisbasis"],
+    ["Use decade filters to isolate industrial milestones and wartime transitions.", "Nutzen Sie Jahrzehnt-Filter, um Industriemeilensteine und Kriegsuebergaenge zu isolieren."],
+    ["All", "Alle"],
+    ["1848 Bremerhaven established as Bremen's outport.", "1848 Bremerhaven als Ausshafen Bremens gegruendet."],
+    ["Late 19th c.", "Spaetes 19. Jh."],
+    ["Dock basins, warehouses, and fisheries expand.", "Dockbecken, Lagerhaeuser und Fischerei expandieren."],
+    ["1930s", "1930er Jahre"],
+    ["Port-shipyard integration deepens industrial capacity.", "Die Integration von Hafen und Werft vertieft die Industriekapazitaet."],
+    ["Wartime shift toward military logistics.", "Kriegsbedingte Verschiebung hin zur Militaerlogistik."],
+    ["Major air raids damage housing and urban infrastructure.", "Schwere Luftangriffe beschaedigen Wohnraum und stadtische Infrastruktur."],
+    ["Port functions recover in stages under reconstruction.", "Hafenfunktionen erholen sich stufenweise im Wiederaufbau."],
+    ["Logistics specialization and modernization accelerate.", "Logistikspezialisierung und Modernisierung beschleunigen sich."],
+    ["Bremerhaven remains a major international maritime node.", "Bremerhaven bleibt ein wichtiger internationaler maritimer Knotenpunkt."],
+    ["Sources, Citations, and Image Credits", "Quellen, Zitate und Bildnachweise"],
+    ["References are formatted in a consistent citation style with direct links and source-role notes.", "Nachweise sind in einheitlichem Zitierstil mit Direktlinks und Rollenhinweisen formatiert."],
+    ["Citations (APA-style)", "Zitate (APA-Stil)"],
+    ["Image Credits", "Bildnachweise"],
+    ["Source-Reliability Labels", "Quellen-Zuverlaessigkeitslabels"],
+    ["Primary factual dates, place functions, and visible archive evidence.", "Primaere Fakten zu Daten, Ortsfunktionen und sichtbaren Archivnachweisen."],
+    ["Composite statements that synthesize several sources where single-source precision is limited.", "Zusammengesetzte Aussagen, die mehrere Quellen verbinden, wenn Einzelquellenpraezision begrenzt ist."],
+    ["Further Reading", "Weiterfuehrende Literatur"],
+    ["Retrieved February 12, 2026, from", "Abgerufen am 12. Februar 2026 von"],
+    ["Wikipedia contributors.", "Wikipedia-Autoren."],
+    ["Encyclopaedia Britannica. (n.d.).", "Encyclopaedia Britannica. (o. J.)."],
+    ["bremenports. (n.d.).", "bremenports. (o. J.)."],
+    ["Wikiwand. (n.d.).", "Wikiwand. (o. J.)."],
+    ["Methodology and selection process", "Methodik und Auswahlprozess"],
+    ["Glossary of maritime terms", "Glossar maritimer Begriffe"],
+    ["Foundational archival visual.", "Grundlegendes Archivbild."],
+    ["Modern comparative endpoint image.", "Modernes Vergleichs-Endbild."],
+    ["Project Scope", "Projektumfang"],
+    ["This website is designed for school, research, and historical orientation use. It focuses on structural shifts before, during, and after WWII.", "Diese Website ist fuer Schule, Forschung und historische Orientierung konzipiert. Sie fokussiert strukturelle Veraenderungen vor, waehrend und nach dem Zweiten Weltkrieg."],
+    ["Contact", "Kontakt"],
+    ["Use this address to request corrections or additional source references.", "Verwenden Sie diese Adresse fuer Korrekturen oder zusaetzliche Quellhinweise."],
+    ["Accessibility Statement", "Erklaerung zur Barrierefreiheit"],
+    ["The site includes keyboard navigation support, skip links, visible focus, and print mode.", "Die Seite enthaelt Tastaturnavigation, Sprunglinks, sichtbaren Fokus und Druckmodus."],
+    ["Selection Process", "Auswahlprozess"],
+    ["Used general-reference and port-operator sources for broad historical coverage.", "Es wurden allgemeine Referenzquellen und Hafenbetreiberquellen fuer breite historische Abdeckung genutzt."],
+    ["Cross-checked date-sensitive claims against multiple references.", "Datumsbezogene Aussagen wurden gegen mehrere Referenzen gegengeprueft."],
+    ["Labeled synthesis statements explicitly as inferred.", "Syntheseaussagen wurden explizit als abgeleitet markiert."],
+    ["Evidence Rules", "Nachweisregeln"],
+    ["Documented: direct factual statements traceable to source text.", "Belegt: direkte Faktangaben, die auf Quelltext zurueckfuehrbar sind."],
+    ["Inferred: multi-source interpretation where exact figures are unavailable.", "Abgeleitet: Mehrquellen-Interpretation, wenn exakte Zahlen fehlen."],
+    ["Image context: captions distinguish archival view vs comparative modern view.", "Bildkontext: Bildunterschriften trennen Archivansicht und moderne Vergleichsansicht."],
+    ["Limitations", "Einschraenkungen"],
+    ["Some operational statistics vary by publication year and reporting scope. Timeline values in visual bars are index-based summaries, not official annual totals.", "Einige Betriebsstatistiken variieren nach Publikationsjahr und Berichtsumfang. Zeitleistenwerte in Balken sind indexbasierte Zusammenfassungen, keine offiziellen Jahresgesamten."],
+    ["Dock Basin", "Dockbecken"],
+    ["Enclosed water area for loading, unloading, and vessel service.", "Eingefasster Wasserbereich fuer Be- und Entladung sowie Schiffsdienst."],
+    ["Shipyard", "Werft"],
+    ["Industrial site where ships are built, repaired, or converted.", "Industrieort, an dem Schiffe gebaut, repariert oder umgebaut werden."],
+    ["Intermodal Logistics", "Intermodale Logistik"],
+    ["Freight movement across ship, rail, and road networks.", "Guterbewegung ueber Schiffs-, Schienen- und Strassennetze."],
+    ["Tonnage", "Tonnage"],
+    ["Measurement scale for cargo volume or vessel capacity.", "Messgroesse fuer Frachtvolumen oder Schiffskapazitaet."],
+    ["Transshipment", "Umschlag"],
+    ["Transfer of cargo between transport modes or vessels.", "Transfer von Fracht zwischen Verkehrstraegern oder Schiffen."],
+    ["Convoy Support", "Konvoiunterstuetzung"],
+    ["Port and repair support for grouped wartime shipping operations.", "Hafen- und Reparaturunterstuetzung fuer gebuendelte Kriegs-Schiffsoperationen."],
+    ["Economic Impact Chart (Index Scale)", "Wirtschaftliche Wirkung (Indexskala)"],
+    ["1946 Recovery", "1946 Erholung"],
+    ["1960 Expansion", "1960 Ausbau"],
+    ["1990 Logistics Shift", "1990 Logistikwandel"],
+    ["2020s Maturity", "Reife in den 2020er Jahren"],
+    ["Technology Changes (Post-War)", "Technologische Veranderungen (Nachkriegszeit)"],
+    ["Higher mechanization in cargo handling and terminal operations.", "Hoherer Mechanisierungsgrad bei Umschlag und Terminalbetrieb."],
+    ["IT-supported logistics scheduling and documentation.", "IT-gestutzte Logistikplanung und Dokumentation."],
+    ["Specialization in automotive and intermodal transfer chains.", "Spezialisierung auf Automotive- und intermodale Umschlagketten."],
+    ["People and Labor", "Menschen und Arbeit"],
+    ["Work profiles shifted from heavy craft concentration toward mixed roles in logistics coordination, maintenance, and digital process control.", "Arbeitsprofile verschoben sich von einer starken handwerklichen Konzentration hin zu gemischten Rollen in Logistikkoordination, Instandhaltung und digitaler Prozesssteuerung."],
+    ["Inferred", "Abgeleitet"],
+    ["Documented", "Belegt"],
+    ["Skip to main content", "Zum Hauptinhalt springen"],
+    ["Last updated:", "Zuletzt aktualisiert:"],
+    ["Next: During WWII", "Weiter: Während WWII"],
+    ["Next: After WWII", "Weiter: Nach WWII"],
+    ["Next: Sources", "Weiter: Quellen"],
+    ["Back to sources", "Zurück zu Quellen"],
+    ["Back home", "Zur Startseite"],
+    ["Return home", "Zur Startseite"],
+    ["Open raw source notes", "Roh-Quellnotizen offnen"],
+    ["Evidence", "Nachweise"],
+    ["Chronology", "Chronologie"],
+    ["Project Info", "Projektinfo"],
+    ["Wahrend", "Während"],
+    ["Uber", "Über"],
+    ["Dark", "Dunkel"],
+    ["Dunkel", "Dark"]
+  ];
+  const textReplacementsDeSorted = [...textReplacementsDe].sort((a, b) => b[0].length - a[0].length);
+
+  const replaceText = (input, lang) => {
+    if (lang !== "de") return input;
+    let output = input;
+    textReplacementsDeSorted.forEach(([en, de]) => {
+      output = output.split(en).join(de);
+    });
+    return output;
+  };
+
+  const translateDocument = (lang) => {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const parentName = node.parentElement?.tagName;
+        if (parentName === "SCRIPT" || parentName === "STYLE") return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    let current = walker.nextNode();
+    while (current) {
+      if (!nodeOriginalText.has(current)) {
+        nodeOriginalText.set(current, current.nodeValue);
+      }
+      const original = nodeOriginalText.get(current) || current.nodeValue;
+      current.nodeValue = replaceText(original, lang);
+      current = walker.nextNode();
+    }
+
+    document.querySelectorAll("[alt], [title], [placeholder]").forEach((el) => {
+      if (!attrOriginalText.has(el)) {
+        attrOriginalText.set(el, {
+          alt: el.getAttribute("alt"),
+          title: el.getAttribute("title"),
+          placeholder: el.getAttribute("placeholder")
+        });
+      }
+      const original = attrOriginalText.get(el);
+      ["alt", "title", "placeholder"].forEach((attr) => {
+        if (original[attr]) {
+          el.setAttribute(attr, replaceText(original[attr], lang));
+        }
+      });
+    });
+  };
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReduced) {
+    const nodes = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    nodes.forEach((node) => observer.observe(node));
+  } else {
+    document.querySelectorAll('.reveal').forEach((node) => node.classList.add('visible'));
+  }
+
+  const body = document.body;
+  const themeButton = document.querySelector('[data-theme-toggle]');
+  const storedTheme = localStorage.getItem('bh_theme');
+  if (storedTheme === 'dark') body.classList.add('dark-theme');
+  if (themeButton) {
+    themeButton.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      localStorage.setItem('bh_theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+    });
+  }
+
+  const langButton = document.querySelector('[data-lang-toggle]');
+  const setLang = (lang) => {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en][data-de]').forEach((node) => {
+      node.textContent = lang === 'de' ? node.dataset.de : node.dataset.en;
+    });
+    translateDocument(lang);
+    const output = document.querySelector('[data-local-views]');
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    const count = Number(localStorage.getItem(`bh_views_${path}`) || 0);
+    if (output) {
+      output.textContent = lang === 'de'
+        ? `Lokale Aufrufe auf diesem Gerat: ${count}`
+        : `Local visits on this device: ${count}`;
+    }
+    localStorage.setItem('bh_lang', lang);
+  };
+
+  const savedLang = localStorage.getItem('bh_lang') || 'en';
+  setLang(savedLang);
+
+  if (langButton) {
+    langButton.addEventListener('click', () => {
+      const next = document.documentElement.lang === 'de' ? 'en' : 'de';
+      setLang(next);
+    });
+  }
+
+  const lightbox = document.querySelector('.lightbox');
+  if (lightbox) {
+    const lightboxImg = lightbox.querySelector('img');
+    document.querySelectorAll('[data-zoomable]').forEach((img) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('open');
+      });
+    });
+    lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') lightbox.classList.remove('open');
+    });
+  }
+
+  const timelineButtons = document.querySelectorAll('[data-era-filter]');
+  if (timelineButtons.length) {
+    timelineButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const era = button.dataset.eraFilter;
+        document.querySelectorAll('[data-era-filter]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        button.setAttribute('aria-pressed', 'true');
+
+        document.querySelectorAll('.timeline-item').forEach((item) => {
+          const match = era === 'all' || item.dataset.era === era;
+          item.dataset.hidden = match ? 'false' : 'true';
+        });
+      });
+    });
+  }
+
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  const navCurrent = document.querySelector(`.nav-links a[href="${path}"]`);
+  if (navCurrent) navCurrent.setAttribute('aria-current', 'page');
+
+  const key = `bh_views_${path}`;
+  const count = Number(localStorage.getItem(key) || 0) + 1;
+  localStorage.setItem(key, String(count));
+  const output = document.querySelector('[data-local-views]');
+  if (output) {
+    output.textContent = document.documentElement.lang === 'de'
+      ? `Lokale Aufrufe auf diesem Gerat: ${count}`
+      : `Local visits on this device: ${count}`;
+  }
+})();

@@ -1,0 +1,9 @@
+{
+  "name": "bremerhaven-ww2-industry-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "powershell -ExecutionPolicy Bypass -File scripts/lint.ps1",
+    "build": "powershell -ExecutionPolicy Bypass -File scripts/build.ps1"
+  }
+}

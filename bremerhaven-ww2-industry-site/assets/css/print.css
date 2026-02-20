@@ -1,0 +1,39 @@
+@media print {
+  .topbar,
+  .actions,
+  .side-column,
+  .lightbox,
+  .timeline-filter,
+  .skip-link,
+  .site-footer {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  .hero {
+    min-height: auto;
+    color: #000;
+    background: none !important;
+  }
+
+  .hero::before { display: none; }
+
+  .hero-inner,
+  .section,
+  .content-panel,
+  .card,
+  .map-box,
+  .infographic,
+  .chart-box {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+  }
+
+  a { color: #000; text-decoration: underline; }
+}
