@@ -1,1 +1,0 @@
-Dieser Code ist mit vollen Rechten auf Noah Temps reserviert
