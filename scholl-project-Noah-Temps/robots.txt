@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bremerhaven-werftgeschichte.de/sitemap.xml
